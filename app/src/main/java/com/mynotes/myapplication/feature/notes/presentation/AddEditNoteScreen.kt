@@ -1,3 +1,4 @@
+// AddEditNoteScreen.kt
 package com.mynotes.myapplication.feature.notes.presentation
 
 import androidx.compose.foundation.layout.Column
@@ -41,7 +42,7 @@ fun AddEditNoteScreen(
     title: String,
     description: String,
     navController: NavController,
-    viewModel: MainViewModel = hiltViewModel()
+    viewModel: MainViewModel
 ) {
     val context = LocalContext.current
     val focusRequest = FocusRequester()
@@ -49,7 +50,8 @@ fun AddEditNoteScreen(
         fontSize = 18.sp,
         fontFamily = poppinsFontFamily,
     )
-    LaunchedEffect(true) {
+
+    LaunchedEffect(noteId) {
         if (noteId > 0) {
             viewModel.getNoteById(noteId)
         } else {

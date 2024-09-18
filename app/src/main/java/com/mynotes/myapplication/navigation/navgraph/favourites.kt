@@ -7,6 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.mynotes.myapplication.feature.favourites.presentation.FavouritesScreen
+import com.mynotes.myapplication.feature.notes.presentation.AddEditNoteScreen
 import com.mynotes.myapplication.navigation.Screen
 import com.mynotes.myapplication.navigation.Tab
 

@@ -20,13 +20,14 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.mynotes.myapplication.feature.core.presentation.MainViewModel
 import com.mynotes.myapplication.feature.core.ui.theme.ubuntuFontFamily
 import com.mynotes.myapplication.navigation.Screen
 import com.mynotes.myapplication.navigation.Tab
 import com.mynotes.myapplication.navigation.bottomNavBarTabs
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(viewModel: MainViewModel) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val isBottomAppBarVisible = rememberSaveable(navBackStackEntry) {
@@ -48,7 +49,7 @@ fun AppNavigation() {
             navController = navController,
             startDestination = Tab.Notes.route
         ) {
-            notes(navController = navController)
+            notes(navController = navController, viewModel = viewModel)
             favourites(navController = navController)
         }
     }

@@ -1,6 +1,7 @@
 // NavGraph.kt
 package com.mynotes.myapplication.navigation.navgraph
 
+import android.util.Log
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
@@ -12,13 +13,14 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.mynotes.myapplication.feature.core.presentation.MainViewModel
 import com.mynotes.myapplication.feature.favourites.presentation.FavouritesScreen
 import com.mynotes.myapplication.feature.notes.presentation.AddEditNoteScreen
 import com.mynotes.myapplication.feature.notes.presentation.NoteScreen
 import com.mynotes.myapplication.navigation.Screen
 import com.mynotes.myapplication.navigation.Tab
 
-fun NavGraphBuilder.notes(navController: NavController) {
+fun NavGraphBuilder.notes(navController: NavController, viewModel: MainViewModel) {
     navigation(
         startDestination = Screen.NoteScreen.route,
         route = Tab.Notes.route
@@ -59,7 +61,8 @@ fun NavGraphBuilder.notes(navController: NavController) {
                 noteId = noteId,
                 title = "",
                 description = "",
-                navController = navController
+                navController = navController,
+                viewModel = viewModel
             )
         }
 
@@ -67,8 +70,8 @@ fun NavGraphBuilder.notes(navController: NavController) {
             route = "${Screen.AddEditNoteScreen.route}/{noteId}/{title}/{description}",
             arguments = listOf(
                 navArgument("noteId") { type = NavType.IntType },
-                navArgument("title") { type = NavType.StringType },
-                navArgument("description") { type = NavType.StringType }
+                navArgument("title") { type = NavType.StringType; defaultValue = "" },
+                navArgument("description") { type = NavType.StringType; defaultValue = "" }
             ),
             enterTransition = {
                 slideInHorizontally(
@@ -90,9 +93,12 @@ fun NavGraphBuilder.notes(navController: NavController) {
                 noteId = noteId,
                 title = title,
                 description = description,
-                navController = navController
+                navController = navController,
+                viewModel = viewModel
             )
+
         }
+
     }
 }
 
