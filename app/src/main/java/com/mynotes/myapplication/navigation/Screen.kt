@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 sealed class Screen(val route: String) {
     data object NoteScreen: Screen("note_screen")
     data object FavouriteScreen: Screen("favourite_screen")
-    data object AddEditNoteScreen: Screen("addEdit_screen")
+    data object AddEditNoteScreen: Screen("add_edit_note-screen")
 }
 
 sealed class Tab(
@@ -24,7 +24,7 @@ sealed class Tab(
     data object Notes: Tab(
         route = "notes_tab",
         icon = BottomAppBarIcons.homeIconOutlined,
-        label = "Notes",
+        label = "My Notes",
         selectedIcon = BottomAppBarIcons.homeIconFilled
     )
 

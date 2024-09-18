@@ -20,10 +20,9 @@ fun NavGraphBuilder.favourites(navController: NavController) {
         ) {
             FavouritesScreen(
                 navController = navController,
-                onEditNoteClick = {noteId ->
-                    navController.navigate(Screen.AddEditNoteScreen.route + "/$noteId")
-                },
-                viewModel = hiltViewModel()
+                onEditNoteClick = {noteId, noteTitle, noteDescription ->
+                    navController.navigate("${Screen.AddEditNoteScreen.route}/$noteId/$noteTitle/$noteDescription")
+                }
             )
         }
     }

@@ -37,19 +37,24 @@ import com.mynotes.myapplication.feature.core.ui.theme.ubuntuFontFamily
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditNoteScreen(
-    noteId : Int,
+    noteId: Int,
+    title: String,
+    description: String,
     navController: NavController,
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val focusRequest = FocusRequester()
-    val textStyle = TextStyle (
+    val textStyle = TextStyle(
         fontSize = 18.sp,
         fontFamily = poppinsFontFamily,
     )
     LaunchedEffect(true) {
-        if(noteId > 0) {
+        if (noteId > 0) {
             viewModel.getNoteById(noteId)
+        } else {
+            viewModel.updateNoteTitle(title)
+            viewModel.updateNoteDescription(description)
         }
     }
 
@@ -68,7 +73,7 @@ fun AddEditNoteScreen(
                 },
                 title = {
                     Text(
-                        text = if(noteId > 0) "Edit Note" else "Add Note",
+                        text = if (noteId > 0) "Edit Note" else "Add Note",
                         fontFamily = ubuntuFontFamily
                     )
                 },
@@ -82,13 +87,13 @@ fun AddEditNoteScreen(
                         }
                     ) {
                         Icon(
-                            imageVector = if(viewModel.note.isBookmarked) Icons.Filled.Bookmark else
+                            imageVector = if (viewModel.note.isBookmarked) Icons.Filled.Bookmark else
                                 Icons.Outlined.BookmarkAdd,
                             contentDescription = null
                         )
                     }
                     IconButton(onClick = {
-                        if(viewModel.note.title.isNotBlank()) {
+                        if (viewModel.note.title.isNotBlank()) {
                             viewModel.insertNote(viewModel.note)
                             navController.popBackStack()
                         } else {
@@ -115,7 +120,7 @@ fun AddEditNoteScreen(
             LaunchedEffect(
                 true
             ) {
-                if(noteId == -1){
+                if (noteId == -1) {
                     focusRequest.requestFocus()
                 }
             }
@@ -128,8 +133,8 @@ fun AddEditNoteScreen(
                 shape = RoundedCornerShape(3.dp),
                 textStyle = textStyle,
                 value = viewModel.note.title,
-                onValueChange = { newValue ->
-                    viewModel.updateNoteTitle(newValue)
+                onValueChange = {
+                    viewModel.updateNoteTitle(it)
                 },
                 placeholder = {
                     Text(
@@ -147,9 +152,9 @@ fun AddEditNoteScreen(
                         .focusRequester(focusRequest),
                     shape = RoundedCornerShape(3.dp),
                     textStyle = textStyle,
-                    value = it,
-                    onValueChange = { newValue ->
-                        viewModel.updateNoteDescription(newValue)
+                    value = viewModel.note.description!!,
+                    onValueChange = {
+                        viewModel.updateNoteDescription(it)
                     },
                     placeholder = {
                         Text(
@@ -159,8 +164,6 @@ fun AddEditNoteScreen(
                     }
                 )
             }
-
-
         }
     }
 }

@@ -22,6 +22,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -40,12 +41,12 @@ import com.mynotes.myapplication.util.Response
 @Composable
 fun NoteScreen(
     onAddNoteClick:(Int) -> Unit,
-    onEditNoteClick:(Int) -> Unit,
+    onEditNoteClick:(Int, String, String) -> Unit,
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
-    val response = viewModel.response.collectAsStateWithLifecycle()
+    val response by viewModel.response.collectAsStateWithLifecycle()
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState)},
@@ -88,7 +89,7 @@ fun NoteScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(contentPadding),
-            targetState = response.value,
+            targetState = response,
             label = "animated content",
             transitionSpec = {
                 fadeIn(
@@ -125,7 +126,7 @@ fun NoteScreen(
                     }
                 }
                 is Response.Error -> {
-                    val msg = result.error.message?: "Something went wrong"
+                    val msg = result.error.message ?: "Something went wrong"
                     LoadingAndErrorScreen(label = msg)
                 } else -> Unit
             }

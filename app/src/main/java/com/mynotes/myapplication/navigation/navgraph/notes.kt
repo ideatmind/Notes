@@ -27,40 +27,71 @@ fun NavGraphBuilder.notes(navController: NavController) {
             route = Screen.NoteScreen.route
         ) {
             NoteScreen(
-                onAddNoteClick = {noteId ->
-                    navController.navigate(Screen.AddEditNoteScreen.route + "/$noteId")},
-                onEditNoteClick = {noteId ->
-                    navController.navigate(Screen.AddEditNoteScreen.route + "/$noteId")
+                onAddNoteClick = { noteId ->
+                    navController.navigate("${Screen.AddEditNoteScreen.route}/$noteId")
                 },
-                viewModel = hiltViewModel()
+                onEditNoteClick = { noteId, title, description ->
+                    navController.navigate("${Screen.AddEditNoteScreen.route}/$noteId/$title/$description")
+                }
             )
         }
 
         composable(
-            route = Screen.AddEditNoteScreen.route + "/{noteId}",
-            arguments = listOf(navArgument("noteId") { type = NavType.IntType }),
+            route = "${Screen.AddEditNoteScreen.route}/{noteId}",
+            arguments = listOf(
+                navArgument("noteId") { type = NavType.IntType }
+            ),
             enterTransition = {
                 slideInHorizontally(
                     initialOffsetX = { -it },
-                    animationSpec = tween(durationMillis = 300,
-                        easing = FastOutSlowInEasing)
+                    animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
                 )
             },
             exitTransition = {
                 slideOutHorizontally(
                     targetOffsetX = { -it },
-                    animationSpec = tween(durationMillis = 300,
-                        easing = FastOutSlowInEasing)
+                    animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
                 )
             }
-        ) {entry ->
-            entry.arguments?.getInt("noteId")?.let { noteId ->
-                AddEditNoteScreen(
-                    noteId= noteId!!,
-                    navController = navController
-                )
-            }
+        ) { entry ->
+            val noteId = entry.arguments?.getInt("noteId") ?: -1
+            AddEditNoteScreen(
+                noteId = noteId,
+                title = "",
+                description = "",
+                navController = navController
+            )
+        }
 
+        composable(
+            route = "${Screen.AddEditNoteScreen.route}/{noteId}/{title}/{description}",
+            arguments = listOf(
+                navArgument("noteId") { type = NavType.IntType },
+                navArgument("title") { type = NavType.StringType },
+                navArgument("description") { type = NavType.StringType }
+            ),
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { -it },
+                    animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { -it },
+                    animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+                )
+            }
+        ) { entry ->
+            val noteId = entry.arguments?.getInt("noteId") ?: -1
+            val title = entry.arguments?.getString("title") ?: ""
+            val description = entry.arguments?.getString("description") ?: ""
+            AddEditNoteScreen(
+                noteId = noteId,
+                title = title,
+                description = description,
+                navController = navController
+            )
         }
     }
 }

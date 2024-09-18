@@ -38,7 +38,7 @@ import com.mynotes.myapplication.util.Response
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun FavouritesScreen(
-    onEditNoteClick:(Int) -> Unit,
+    onEditNoteClick:(Int, String, String) -> Unit,
     viewModel: MainViewModel = hiltViewModel(),
     navController: NavController
 ) {

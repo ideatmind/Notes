@@ -36,7 +36,7 @@ import kotlin.random.Random
 @Composable
 fun NoteCard(
     note: Note,
-    onEditNoteClick:(Int) -> Unit,
+    onEditNoteClick:(Int, String,String) -> Unit,
     onUndoDeleteClick:() -> Unit,
     viewModel: MainViewModel = hiltViewModel()
 ) {
@@ -124,7 +124,7 @@ fun NoteCard(
                 }
                 IconButton(
                     onClick = {
-                        onEditNoteClick(note.id)
+                        note.description?.let { onEditNoteClick(note.id, note.title, it) }
                     }
                 ) {
                     Icon(
@@ -163,3 +163,11 @@ val beautifulColors = listOf(
 fun getRandomColor(): Color {
     return beautifulColors[Random.nextInt(beautifulColors.size)]
 }
+
+data class Note(
+    val id: Int,
+    val title: String,
+    val description: String?,
+    val isBookmarked: Boolean,
+    val backgroundColor: Color = getRandomColor() // Default to a random color
+)

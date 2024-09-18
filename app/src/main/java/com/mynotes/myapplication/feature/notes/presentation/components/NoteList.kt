@@ -13,7 +13,7 @@ import com.mynotes.myapplication.feature.notes.domain.model.Note
 @Composable
 fun NoteList(
     notes: List<Note>,
-    onEditNoteClick: (Int) -> Unit,
+    onEditNoteClick: (Int, String, String) -> Unit,
     onUndoDeleteClick: () -> Unit
 ) {
     LazyVerticalStaggeredGrid(
@@ -23,7 +23,7 @@ fun NoteList(
         verticalItemSpacing = 4.dp,
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        items(notes) { note ->
+        items(notes.reversed()) { note ->
             NoteCard(
                 note = note,
                 onEditNoteClick = onEditNoteClick,
